@@ -1,0 +1,32 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  font-size: 16px;
+  outline: 0;
+  font-family: pf;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+// 鼠标移入变小手
+.pointer:hover {
+  cursor: pointer;
+}
+
+// 文本溢出省略
+.text_ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
