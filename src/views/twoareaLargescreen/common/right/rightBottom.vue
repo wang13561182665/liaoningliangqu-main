@@ -1,10 +1,10 @@
 <!--
 * @创建人: 王怀德
-* @具体功能: 辽宁“两区”监测一张图-左边底部组件：xxx两区分布概况
+* @具体功能: 辽宁“两区”监测一张图-右边底部组件：xxx两区种植情况
 -->
 <template>
-  <div class="leftBottom">
-    <chartTitle>{{ region.selectNmae }}两区数据情况</chartTitle>
+  <div class="rightBottom">
+    <chartTitle>{{ region.selectNmae }}两区种植情况</chartTitle>
     <div class="content">
       <div ref="echartsMain"></div>
     </div>
@@ -12,10 +12,9 @@
 </template>
 <script>
 import { mapState } from "vuex";
-// 图表组件的标题
 import chartTitle from "@/components/chartTitle/index.vue";
 export default {
-  name: "leftBottom",
+  name: "rightBottom",
   // 注册引用的组件
   components: {
     chartTitle,
@@ -25,19 +24,19 @@ export default {
       option: {
         company: "万亩",
         color: ["#00ddff", "#ffe449", "#ae61ff"],
-        legendData: ["基本农田", "两区划定", "高标农田"],
+        legendData: ["小麦", "水稻", "大豆"],
         xAxisData: [],
         series: [
           {
-            name: "基本农田",
+            name: "小麦",
             data: [],
           },
           {
-            name: "两区划定",
+            name: "水稻",
             data: [],
           },
           {
-            name: "高标农田",
+            name: "大豆",
             data: [],
           },
         ],
@@ -63,62 +62,7 @@ export default {
   },
   // 生命vue函数
   methods: {
-    init() {
-      let series = [];
-      this.option.series.forEach((item, index) => {
-        let barObj = {
-          name: item.name,
-          type: "bar",
-          barGap: "-40%",
-          barWidth: 16,
-          barMaxWidth: 16,
-          barMinWidth: 16,
-          emphasis: {
-            focus: "series",
-          },
-          data: item.data,
-          itemStyle: {
-            // 只会改变柱状的颜色，不用改变legend的颜色
-            normal: {
-              color: () => {
-                return new this.$echarts.graphic.LinearGradient(1, 0, 0, 1, [
-                  {
-                    offset: 1,
-                    color: `${this.option.color[index]}00`, // 0% 处的颜色
-                  },
-                  {
-                    offset: 0,
-                    color: this.option.color[index], // 100% 处的颜色
-                  },
-                ]);
-              },
-            },
-          },
-        };
-        let pictorialBar = {
-          name: item.name,
-          type: "pictorialBar",
-          symbol: "rect",
-          barGap: "-40%",
-          symbolSize: [16, 2],
-          symbolOffset: [0, -4],
-          zlevel: 2,
-          barMinWidth: 16,
-          itemStyle: {
-            normal: {
-              color: this.option.color[index],
-              shadowBlur: 5,
-              shadowOffsetY: 2,
-              shadowColor: this.option.color[index],
-            },
-          },
-          symbolPosition: "end",
-          data: item.data,
-        };
-        series.push(barObj, pictorialBar);
-      });
-      const chartDom = this.$refs.echartsMain;
-      const myChart = this.$echarts.init(chartDom);
+    loadEcharts(myChart, series) {
       let option;
       option = {
         tooltip: {
@@ -128,12 +72,16 @@ export default {
           },
           formatter: (params) => {
             let htmlStr = `${params[0].axisValue}`;
-            params.forEach((item) => {
+            params.forEach((item, index) => {
               if (item.componentSubType === "pictorialBar") {
                 htmlStr += `
                 <div>
-                  <div style="background:${item.color};width:12px;height:12px;display:inline-block;margin-right:5px;"></div>
-                  ${item.seriesName}：${item.value} ${this.option.company}
+                  <div style="background:${
+                    item.color
+                  };width:12px;height:12px;display:inline-block;margin-right:5px;"></div>
+                  ${item.seriesName}：${params[index - 1].value} ${
+                  this.option.company
+                }
                 </div>`;
               }
             });
@@ -196,22 +144,107 @@ export default {
         ],
         series: series,
       };
-
       option && myChart.setOption(option);
+    },
+    handleEchartsData(myChart, legendselectchanged) {
+      let series = [];
+      this.option.series.forEach((item, index) => {
+        let barObj = {
+          name: item.name,
+          type: "bar",
+          stack: "Ad",
+          barWidth: 16,
+          barMaxWidth: 16,
+          barMinWidth: 16,
+          emphasis: {
+            focus: "series",
+          },
+          data: item.data,
+          itemStyle: {
+            // 只会改变柱状的颜色，不用改变legend的颜色
+            normal: {
+              color: () => {
+                return new this.$echarts.graphic.LinearGradient(1, 0, 0, 1, [
+                  {
+                    offset: 1,
+                    color: `${this.option.color[index]}00`, // 0% 处的颜色
+                  },
+                  {
+                    offset: 0,
+                    color: this.option.color[index], // 100% 处的颜色
+                  },
+                ]);
+              },
+            },
+          },
+        };
+        let pictorialBarData = [];
+        for (let i = 0; i <= index; i++) {
+          let condition = true;
+          if (legendselectchanged) {
+            for (const key in legendselectchanged.selected) {
+              if (this.option.series[i].name === key) {
+                condition = legendselectchanged.selected[key];
+              }
+            }
+          }
+          if (condition) {
+            if (pictorialBarData.length > 0) {
+              this.option.series[i].data.forEach((seriesItem, seriesIndex) => {
+                pictorialBarData[seriesIndex] += seriesItem;
+              });
+            } else {
+              pictorialBarData = JSON.parse(
+                JSON.stringify(this.option.series[i].data)
+              );
+            }
+          }
+        }
+        let pictorialBar = {
+          name: item.name,
+          type: "pictorialBar",
+          stack: "Ad",
+          symbol: "rect",
+          symbolSize: [16, 2],
+          symbolOffset: [0, -5],
+          zlevel: 2,
+          barMinWidth: 16,
+          itemStyle: {
+            normal: {
+              color: this.option.color[index],
+              shadowBlur: 5,
+              shadowOffsetY: 2,
+              shadowColor: this.option.color[index],
+            },
+          },
+          symbolPosition: "end",
+          data: pictorialBarData,
+        };
+        series.push(barObj, pictorialBar);
+      });
+      this.loadEcharts(myChart, series);
+    },
+    init() {
+      const chartDom = this.$refs.echartsMain;
+      const myChart = this.$echarts.init(chartDom);
+      this.handleEchartsData(myChart);
+      myChart.on("legendselectchanged", (e) => {
+        this.handleEchartsData(myChart, e);
+      });
     },
   },
 };
 </script>
 
 <style scoped lang="scss">
-.leftBottom {
+.rightBottom {
   width: 928px;
   color: #f3feff;
   position: absolute;
   z-index: 9;
-  left: 24px;
+  right: 24px;
   top: 680px;
-  .content {
+  > .content {
     height: 256px;
     margin-bottom: 16px;
     background-image: url("../../image/common/echarts_928x256bg.png");

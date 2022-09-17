@@ -8,6 +8,7 @@
 <script>
 import LeftNav from "@/components/leftNav/index.vue";
 import screen from "./views/common/js/screen";
+import { mapActions } from "vuex";
 export default {
   name: "App",
   mixins: [screen],
@@ -17,6 +18,14 @@ export default {
   data() {
     return {};
   },
+  mounted() {
+    this.getRegion();
+  },
+  methods: {
+    ...mapActions({
+      getRegion: "regionAndDate/getRegion",
+    }),
+  }
 };
 </script>
 

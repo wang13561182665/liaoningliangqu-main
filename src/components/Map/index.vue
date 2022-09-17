@@ -90,10 +90,10 @@ export default {
 <style scoped lang="scss">
 @import "../../views/common/scss/common.scss";
 #map {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 }
 </style>

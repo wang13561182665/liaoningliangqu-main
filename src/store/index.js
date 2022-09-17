@@ -1,5 +1,7 @@
 import { createStore } from 'vuex'
 
+import regionAndDate from "./common/regionAndDate/index"
+import twoareaLargescreen from "./views/twoareaLargescreen/index"
 export default createStore({
   state: {
   },
@@ -10,5 +12,7 @@ export default createStore({
   actions: {
   },
   modules: {
+    regionAndDate,
+    twoareaLargescreen
   }
 })

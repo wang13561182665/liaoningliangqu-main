@@ -4,7 +4,7 @@
 -->
 <template>
   <div class="leftMiddle">
-    <chartTitle>两区数据情况</chartTitle>
+    <chartTitle>{{ region.selectNmae }}两区数据情况</chartTitle>
     <div class="content">
       <div class="left">
         <div class="data_text">
@@ -34,6 +34,7 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 // 图表组件的标题
 import chartTitle from "@/components/chartTitle/index.vue";
 export default {
@@ -44,6 +45,11 @@ export default {
   },
   data() {
     return {};
+  },
+  computed: {
+    ...mapState({
+      region: (state) => state.regionAndDate.region,
+    }),
   },
   // 实例创建完成后的生命周期回调
   created() {},
@@ -58,10 +64,14 @@ export default {
 .leftMiddle {
   width: 456px;
   color: #f3feff;
+  position: absolute;
+  z-index: 9;
+  left: 24px;
+  top: 352px;
   > .content {
     height: 272px;
     margin-bottom: 16px;
-    background-image: url("../../image/leftMiddle/echarts_456x272bg.png");
+    background-image: url("../../image/common/echarts_456x272bg.png");
     background-repeat: no-repeat;
     background-size: 456px 272px;
     display: flex;

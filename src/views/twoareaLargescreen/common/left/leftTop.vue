@@ -4,7 +4,7 @@
 -->
 <template>
   <div class="leftTop">
-    <chartTitle>农业产品基础信息</chartTitle>
+    <chartTitle>{{ region.selectNmae }}农业产品基础信息</chartTitle>
     <div class="content">
       <div class="top">
         <div>
@@ -63,6 +63,7 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 // 图表组件的标题
 import chartTitle from "@/components/chartTitle/index.vue";
 export default {
@@ -73,6 +74,11 @@ export default {
   },
   data() {
     return {};
+  },
+  computed: {
+    ...mapState({
+      region: (state) => state.regionAndDate.region,
+    }),
   },
   // 实例创建完成后的生命周期回调
   created() {},
@@ -87,10 +93,14 @@ export default {
 .leftTop {
   width: 456px;
   color: #f3feff;
+  position: absolute;
+  z-index: 9;
+  left: 24px;
+  top: 0;
   > .content {
     height: 296px;
     margin-bottom: 16px;
-    background-image: url("../../image/leftTop/echarts_456x296bg.png");
+    background-image: url("../../image/common/echarts_456x296bg.png");
     background-repeat: no-repeat;
     background-size: 456px 296px;
     position: relative;
@@ -177,7 +187,7 @@ export default {
           align-content: center;
           justify-content: center;
           align-items: flex-end;
-          margin-bottom: 5px;
+          margin-bottom: 10px;
           > h4 {
             background-image: linear-gradient(
               to bottom,

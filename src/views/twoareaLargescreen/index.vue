@@ -11,6 +11,10 @@
       <leftTop></leftTop>
       <leftMiddle></leftMiddle>
       <leftBottom></leftBottom>
+      <rightTop></rightTop>
+      <rightMiddle></rightMiddle>
+      <rightBottom></rightBottom>
+      <MiddleIndex></MiddleIndex>
     </div>
   </div>
 </template>
@@ -25,6 +29,14 @@ import leftTop from "./common/left/leftTop.vue";
 import leftMiddle from "./common/left/leftMiddle.vue";
 // 左图表三组件-xxx两区分布概况
 import leftBottom from "./common/left/leftBottom.vue";
+// 右图表一组件-xxx两区数据情况(xxxx年)
+import rightTop from "./common/right/rightTop.vue";
+// 右图表二组件-xxx两区非粮化情况
+import rightMiddle from "./common/right/rightMiddle.vue";
+// 右图表二组件-xxx两区种植情况
+import rightBottom from "./common/right/rightBottom.vue";
+// 右图表二组件-xxx两区种植情况
+import MiddleIndex from "./common/middle/index.vue";
 export default {
   name: "twoareaLargescreen",
   // 注册引用的组件
@@ -33,6 +45,10 @@ export default {
     leftTop,
     leftMiddle,
     leftBottom,
+    rightTop,
+    rightMiddle,
+    rightBottom,
+    MiddleIndex,
   },
   data() {
     return {
@@ -49,7 +65,8 @@ export default {
   // 实例创建完成后的生命周期回调
   created() {},
   // 实例挂载完成后的生命周期回调
-  mounted() {},
+  mounted() {
+  },
   // 生命vue函数
   methods: {},
 };
@@ -70,7 +87,6 @@ export default {
   justify-content: flex-start;
   > .main {
     flex: 1;
-    padding: 0 24px 16px;
     position: relative;
   }
 }
