@@ -4,7 +4,10 @@
 -->
 <template>
   <div id="regionAndDate">
-    <div id="largeScreen_regionAndDate">
+    <div
+      id="largeScreen_regionAndDate"
+      :class="regionAndDateData.type === 'dark' ? 'regionAndDate_dark' : 'regionAndDate_undertint'"
+    >
       <el-cascader
         v-model="region.selectCode"
         placeholder="请选择您要查看的行政区"
@@ -13,12 +16,16 @@
         filterable
         ref="largeScreen_region"
         :separator="''"
-        popper-class="largeScreen_region"
+        :popper-class="
+          regionAndDateData.type === 'dark' ? 'largeScreen_region' : ''
+        "
         @change="regionChange"
       />
       <el-select
         v-model="selectValue"
-        popper-class="largeScreen_date"
+        :popper-class="
+          regionAndDateData.type === 'dark' ? 'largeScreen_date' : ''
+        "
         @change="dateChange"
       >
         <el-option
@@ -35,6 +42,16 @@
 import { mapState, mapMutations, mapActions } from "vuex";
 export default {
   name: "regionAndDate",
+  props: {
+    regionAndDateData: {
+      type: Object,
+      default: () => {
+        return {
+          type: null,
+        };
+      },
+    },
+  },
   // 注册引用的组件
   components: {},
   data() {
@@ -85,14 +102,12 @@ export default {
 </script>
 
 <style lang="scss">
-#largeScreen_regionAndDate {
+.regionAndDate_dark {
   > .el-cascader {
     background-color: #0000 !important;
     background-image: url("./image/region_bg.png");
     background-repeat: no-repeat;
     background-size: 194px 42px;
-    width: 194px;
-    height: 42px;
     > .el-input {
       background-color: #0000 !important;
       > .el-input__inner {
@@ -108,13 +123,10 @@ export default {
     }
   }
   > .el-select {
-    margin-left: 12px;
     background-color: #0000 !important;
     background-image: url("./image/region_bg.png");
     background-repeat: no-repeat;
     background-size: 103px 42px;
-    width: 103px;
-    height: 42px;
     > .select-trigger {
       background-color: #0000 !important;
       > .el-input {
@@ -131,6 +143,17 @@ export default {
         }
       }
     }
+  }
+}
+#largeScreen_regionAndDate {
+  > .el-cascader {
+    width: 194px;
+    height: 42px;
+  }
+  > .el-select {
+    margin-left: 12px;
+    width: 103px;
+    height: 42px;
   }
 }
 .largeScreen_region {
