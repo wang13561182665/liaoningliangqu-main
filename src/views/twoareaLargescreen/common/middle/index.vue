@@ -13,6 +13,9 @@
     <div class="left_bottom">
       <layerToggle :layerToggleData ="layerToggleData"></layerToggle>
     </div>
+    <div class="right_top">
+      <layerTabbar :layerTabbarData ="layerTabbarData"></layerTabbar>
+    </div>
     <Map></Map>
   </div>
 </template>
@@ -20,6 +23,7 @@
 import regionAndDate from "../../../../components/regionAndDate/index.vue";
 import legendIcon from "../../../../components/legendIcon/index.vue";
 import layerToggle from "../../../../components/layerToggle/index.vue";
+import layerTabbar from "../../../../components/layerTabbar/index.vue";
 import Map from "../../../../components/Map/index.vue";
 export default {
   name: "MiddleIndex",
@@ -28,6 +32,7 @@ export default {
     regionAndDate,
     legendIcon,
     layerToggle,
+    layerTabbar,
     Map,
   },
   data() {
@@ -56,6 +61,10 @@ export default {
       },
       // 切换地图图层组件的模式（dark深色、undertint浅色）
       layerToggleData: {
+        type: 'dark',
+      },
+      // 切换图层选项卡组件的模式（dark深色、undertint浅色）
+      layerTabbarData: {
         type: 'dark',
       },
     };
@@ -95,6 +104,13 @@ export default {
     z-index: 9;
     bottom: 328px;
     left: 496px;
+  }
+  .right_top {
+    position: absolute;
+    z-index: 9;
+    top: 16px;
+    right: 496px;
+
   }
 }
 </style>

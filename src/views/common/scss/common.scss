@@ -30,3 +30,8 @@ li {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+// 过渡效果
+.transition_effect {
+  transition: all 0.5s;
+}
